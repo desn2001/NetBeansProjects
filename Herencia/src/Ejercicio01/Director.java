@@ -8,22 +8,26 @@ package Ejercicio01;
  *
  * @author desn2
  */
-public class Contable extends Empleado{
+public class Director extends Empleado{
+    private int numDespacho;
     private double plusSalario;
 
-    public Contable(String dni, String nombre) {
+    public Director(String dni, String nombre,int numDespacho) {
         super(dni, nombre);
-        this.plusSalario = 200;
+        this.numDespacho = numDespacho;
+        this.plusSalario = 400;
     }
 
     @Override
     public double CalcularSueldo() {
-        return super.CalcularSueldo() + plusSalario;
+        return super.CalcularSueldo() + plusSalario; 
     }
     
-    public void contabilizar(){
-        System.out.println("Estoy contabilizando...");
+    public void analizarDatos(){
+        System.out.println("Estoy analizando muchos datos...");
     }
+    
+    
     
     
     

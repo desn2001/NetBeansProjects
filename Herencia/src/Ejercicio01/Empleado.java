@@ -9,6 +9,7 @@ package Ejercicio01;
  * @author desn2
  */
 public class Empleado {
+
     private String dni;
     private String nombre;
     private String email;
@@ -70,19 +71,18 @@ public class Empleado {
     public void setPrecioHoraExtra(double precioHoraExtra) {
         this.precioHoraExtra = precioHoraExtra;
     }
-    
-    
-    
-    public double CalcularSueldo(){
-        return salarioBase + (precioHoraExtra*horasExtras);
+
+    public void añadirHorasExtras(int horas) {
+        this.horasExtras = horas++;
+    }
+
+    public double CalcularSueldo() {
+        return salarioBase + (precioHoraExtra * horasExtras);
     }
 
     @Override
     public String toString() {
-        return nombre + " (DNI:" +dni+")";
-    }    
-    
-    
-    
-    
+        return nombre + " (DNI:" + dni + ")";
+    }
+
 }

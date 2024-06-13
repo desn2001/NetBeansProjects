@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.sql.*;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -38,7 +39,7 @@ public class menu {
             opcion = Integer.parseInt(teclado.nextLine());
             switch (opcion) {
                 case 1:
-
+                    listarHoras();
                     break;
                 case 2:
                     introducirHoras();
@@ -97,18 +98,40 @@ public class menu {
 
         int segundosTrabajados;
         segundosTrabajados = (int) ChronoUnit.SECONDS.between(horaEntrada, HoraSalida);
-        System.out.println(segundosTrabajados);
+//        System.out.println(segundosTrabajados);
         int horas, minutos;
         horas = segundosTrabajados / 3600;
         minutos = Math.abs((horas * 3600 - segundosTrabajados) / 60);
-        System.out.printf("%dh y %02dmin\n", horas, minutos);
+//        System.out.printf("%dh y %02dmin\n", horas, minutos);
         try {
             String sql = String.format(
-                    Locale.US,"INSERT INTO registro_horas (fecha, hora_de_entrada, hora_de_salida, horas_totales, minutos_totales) VALUES (CURDATE(), '%s', '%s', %d, %d)",
+                    Locale.US, "INSERT INTO registro_horas (fecha, hora_de_entrada, hora_de_salida, horas_totales, minutos_totales) VALUES (CURDATE(), '%s', '%s', %d, %d)",
                     horaEntrada, HoraSalida, horas, minutos
             );
             sta.executeUpdate(sql);
             conexion.commit();
+        } catch (SQLException ex) {
+            Logger.getLogger(menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private static void listarHoras() {
+        try {
+            String sql = String.format("SELECT * FROM registro_horas");
+            ResultSet rs = sta.executeQuery(sql);
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                Date fecha = rs.getDate("fecha");
+                Time horaEntrada = rs.getTime("hora_de_entrada");
+                Time horaSalida = rs.getTime("hora_de_salida");
+                int horasTotales = rs.getInt("horas_totales");
+                int minutosTotales = rs.getInt("minutos_totales");
+
+                System.out.printf("ID: %d, Fecha: %s, Hora de entrada: %s, Hora de salida: %s, Horas totales: %d, Minutos totales: %d%n",
+                        id, fecha.toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), horaEntrada.toString(), horaSalida.toString(), horasTotales, minutosTotales);
+
+            }
+            rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(menu.class.getName()).log(Level.SEVERE, null, ex);
         }

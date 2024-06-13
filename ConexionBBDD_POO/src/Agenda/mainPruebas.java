@@ -27,7 +27,12 @@ public class mainPruebas {
 //        BD.insertar(nuevoContacto);
 //        BD.insertar(nuevoContacto2);
 //        BD.insertar(nuevoContacto3);
-        System.out.println(BD.calcularEdad(nuevoContacto));
+        System.out.println(BD.calcularEdad(nuevoContacto2));
+//        BD.eliminar(1);
+
+        for (Contacto contacto : BD.listaCompleta()) {
+            System.out.println(contacto);
+        }
         BD.desconectar();
     }
 
